@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Users</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'quotes'%}">DashBoard</a>
+        <a href="{% url 'logout'%}">Logout</a>
+    </div>
+    <h3>Posts by {{user.first_name}}</h3>
+    <h3>Count: {{count}}</h3>
+
+    {% for quote in quotes%}
+    <b>{{quote.quoted_by}} :</b><span> {{quote.quote}}</span><br>
+    {% endfor%}
+    
+</body>
+</html>

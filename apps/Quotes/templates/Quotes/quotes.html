@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Quotes</title>
+</head>
+<body>
+    <div class="nav">
+        <a href="{% url 'logout'%}">Logout</a>
+    </div>
+    {% if messages %}
+    <ul class="messages">
+        {% for message in messages %}
+        <li{% if message.tags %} class="{{message.tags}}"{% endif %}>{{ message }}</li>
+        {% endfor %}
+    </ul>
+    {% endif %}
+    <h1>Welcome {{this_user.first_name}}!</h1>
+
+    <h3>Quoteable Quotes</h3>
+    {%for quote in quotes %}
+    <textarea rows="8" cols="20">{{quote.quoted_by}} : {{quote.quote}}</textarea>
+    Posted By:<a href="{% url 'user' id=quote.added_by.id %}">{{quote.added_by.first_name}}</a>
+    <form action="{% url 'faveorite' id=quote.id %}" method="POST">
+        {% csrf_token %}
+        <input type="submit" value="Add to My List">
+    </form>
+    {% endfor%}
+
+    <h3>Your Favorites</h3>
+    {% for quote in user_faves %}
+    <textarea rows="8" cols="20">{{quote.quoted_by}} : {{quote.quote}}</textarea>
+    <form action="{% url 'remove' id=quote.id %}" method="POST">
+        {% csrf_token %}
+        <input type="hidden" name="quote_id" value="{{quote.id}}">
+        <input type="submit" value="Remove from My List">
+    </form>
+    {% endfor %}
+
+    <h3>Contribute a Quote</h3>
+    <form action="{% url 'add'%}" method="POST">
+        {% csrf_token %}
+        <label for="quoted_by">Quoted By:<input type="text" name="quoted_by"></label>
+        <label for="quote">Quote:<textarea rows="4" cols="20" name="quote"></textarea></label>
+        <input type="submit" value="Submit">
+    </form>
+</body>
+</html>
